@@ -21,6 +21,8 @@ This presentation will cover ES6, released in 2015. We will not cover features f
 We will also not touch on Typescript. This will not be an exhaustive list of new features. Instead we will focus
 on the most useful features that you ought to know.
 
+[Javascript features and when they are available](http://kangax.github.io/compat-table/es6/)
+
 # var, let, and const
 
 ##### What is the change?
@@ -194,10 +196,63 @@ console.log(getTermsOfService());
 This is a handy way to make code a bit more readable. Keep in mind line breaks in your multiline string are treated as \r\n. 
 
 
-# Array Prototype Functions
+# Array Prototype Functions - New in ES6
 
 ##### What is the change?
+With ES6 there are a number of new Array Prototype methods available. In many cases these replace functions previously 
+available in lodash.
 
 ##### Why?
+- Manipulating arrays is so common it is nice to have it built into the language, rather than only available from libraries 
+like lodash or underscore.
+- I think the syntax is a bit cleaner than lodash.
+
+##### Examples
+
+Array.prototype.find:
+```
+const myNumbers = [1, 2, 5, 7, 10];
+const firstNumberGreaterThanFive = myNumbers.find(function(element, index, array) { return element > 5; });
+console.log(firstNumberGreaterThanFive);
+// 7
+```
+
+Array.prototype.keys:
+```
+const myNumbers = [1, 2, 5, 7, 10];
+const keys = myNumbers.keys();
+for (let key of keys) {
+  console.log(key);
+}
+// 0 1 2 3 4
+```
+
+Array.prototype.values:
+```
+const myNumbers = [1, 2, 5, 7, 10];
+const values = myNumbers.values();
+for (let v of values) {
+  console.log(v);
+}
+// 1 2 5 7 10
+```
+
+##### Other Prototype methods actually available in ES5 
+- `Array.prototype.forEach`
+- `Array.prototype.indexOf`
+- `Array.prototype.map`
+- `Array.prototype.filter`
+- `Array.prototype.reduce`
+- `Array.prototype.sort`
+
+##### Should these be favored over lodash functions?
+Personally, I prefer built in functions over functions from libraries. However, lodash does have some 
+
+##### Other Prototype methods not covered here:
+- `Array.from()`: Easily create a new array from an input array
+- `Array.prototype.findIndex()`: Just like `Array.prototype.find` but returns the index of the element instead of the value. 
+
+
+don't forget differences with nulls
 
 ##### Conclusion
