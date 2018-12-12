@@ -6,12 +6,12 @@ by Eric Mulcahy
 - var, let, and const
 - String template literals
 - Multiline strings
+- `for .. of` and `for .. in`
 - ES5/6 Array prototype functions
 
-TODO
+###TODO
 - arrow functions - don't need the function syntax
 - this & arrow functions - can't just swap all functions to arrow functions. but callbacks are safe
-- for of vs for in
 - Map, Set vs objects and arrays. Show Jsonify of them - not good transport
 - Promise
 
@@ -195,7 +195,62 @@ console.log(getTermsOfService());
 This is a handy way to make code a bit more readable. Keep in mind line breaks in your multiline string are treated as \r\n. 
 
 
-# Array Prototype Functions - New in ES6
+# `for .. in` and `for .. of`
+
+##### What is the change?
+These easily confused methods are used to iterate over enumerable properties on an object or array. Let's go right to the example.
+
+##### Examples
+First, `for .. in` iterates over the 'enumerable properties' of the object or array:
+```
+const myNumbers = [1, 2, 5, 7, 10];
+for (let x in myNumbers) {
+  console.log(x);
+}
+// 0 1 2 3 4
+```
+For an array, the 'enumerable properties' are the keys in the array, which are just the integer indexes.
+
+For an object, the 'enumerable properties' are the keys of the object that are marked as enumerable:
+```
+const languageRankings = {
+  'Java': 3,
+  'Javascript-ES5': 5,
+  'Javascript-ES6': 6,
+  'Typescript': 9.8  
+}
+
+for (let x in languageRankings) {
+  console.log(x);
+}
+// Output: Java Javascript-ES5 Javascript-ES6 Typescript
+
+for (let x in languageRankings) {
+  console.log(languageRankings[x]);
+}
+// Output: 2 5 6 9.8
+```
+
+What about `for .. of`? This is a shorthand to iterate over iterable collections. It does not work on Objects because
+objects are not iterable. 
+```
+const myNumbers = [1, 2, 5, 7, 10];
+for (let x of myNumbers) {
+  console.log(x);
+}
+// Output: 1 2 5 7 10
+```
+
+As you can see, this is the same as using `for .. in` where we used `console.log(languageRankings[x])` above. So instead
+of iterating over the keys of an array, this iterates over the values of an array. 
+
+##### Conclusion
+
+These are useful methods to concisely iterate over arrays or objects. In my opinion `for .. of` feels the most natural
+when used to iterate over the values of an array. `for .. in` is most useful when you want to iterate over the keys of
+an object. However, both can be used for more than these two simple cases.
+
+# Array Prototype Functions
 
 ##### What is the change?
 With ES6 there are a number of new Array Prototype methods available. In many cases these replace functions previously 
