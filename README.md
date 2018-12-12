@@ -6,15 +6,14 @@ by Eric Mulcahy
 - var, let, and const
 - String template literals
 - Multiline strings
+- ES5/6 Array prototype functions
 
 TODO
 - arrow functions - don't need the function syntax
 - this & arrow functions - can't just swap all functions to arrow functions. but callbacks are safe
-- array prototype functions () filter, map, reduce, foreach replaces lodash stuff
 - for of vs for in
 - Map, Set vs objects and arrays. Show Jsonify of them - not good transport
 - Promise
-- string templates ${`asdf`}
 
 ### What era of Javascript will we cover?
 This presentation will cover ES6, released in 2015. We will not cover features from ES2016, ES2017, or ES2018.
@@ -237,6 +236,11 @@ for (let v of values) {
 // 1 2 5 7 10
 ```
 
+Other ES6 Prototype methods not covered here:
+- `Array.from()`: Easily create a new array from an input array
+- `Array.prototype.findIndex()`: Just like `Array.prototype.find` but returns the index of the element instead of the value. 
+
+
 ##### Other Prototype methods actually available in ES5 
 - `Array.prototype.forEach`
 - `Array.prototype.indexOf`
@@ -246,13 +250,29 @@ for (let v of values) {
 - `Array.prototype.sort`
 
 ##### Should these be favored over lodash functions?
-Personally, I prefer built in functions over functions from libraries. However, lodash does have some 
+Personally, I prefer built in functions over functions from libraries. However, lodash does have some protection against nulls:
+```
+const myNumbers = [1, 2, 5, 7, 10];
 
-##### Other Prototype methods not covered here:
-- `Array.from()`: Easily create a new array from an input array
-- `Array.prototype.findIndex()`: Just like `Array.prototype.find` but returns the index of the element instead of the value. 
+const builtInFilter = myNumbers.filter(function(item) {return item > 5});
+console.log(usingBuiltIn); // [7, 10]
 
+const lodashFilter = _.filter(myNumbers, function(item) {return item > 5});
+console.log(lodashFilter); // [7, 10]
+// so far they are equivalent
 
-don't forget differences with nulls
+const nullVariable = null;
+const builtInFilter = nullVariable.filter(function(item) {return item > 5});
+// Uncaught TypeError: Cannot read property 'filter' of null
+
+const lodashFilter = _.filter(nullVariable, function(item) {return item > 5});
+// empty array [] 
+```
+
+So if you want to get rid of lodash and use built in functions you do need to be careful about situations where the input 
+may be null.
 
 ##### Conclusion
+
+Many array functions previously only available from libraries like lodash are now built into the language. Just be careful
+when switching because there are some subtle differences. 
