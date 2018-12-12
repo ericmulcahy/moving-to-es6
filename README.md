@@ -3,6 +3,10 @@
 by Eric Mulcahy
 
 ### We will cover:
+- var, let, and const
+- String template literals
+- Multiline strings
+
 TODO
 - arrow functions - don't need the function syntax
 - this & arrow functions - can't just swap all functions to arrow functions. but callbacks are safe
@@ -17,14 +21,15 @@ This presentation will cover ES6, released in 2015. We will not cover features f
 We will also not touch on Typescript. This will not be an exhaustive list of new features. Instead we will focus
 on the most useful features that you ought to know.
 
-### var, let, and const
+# var, let, and const
 
 ##### What is the change?
 Stop using `var`, start using `let` and `const`
 
 ##### Why?
 Two reasons: first of all, when using `var`, scoping is limited to the function, but not to the block.
-Consider:
+
+##### Example
 
 ```
 var x = '1';
@@ -120,3 +125,79 @@ Instead of `var`, start using `const`. Unless the variable should be reassignabl
 using `const` everywhere until you get used to it. If you try to reassign a constant variable, linting will let you know,
 and you can decide if you should use a new variable to keep immutability, or if you really do want a mutable variable.
 
+# String Template Literals
+
+##### What is the change?
+String Template Literals are a handy way to concatenate strings with variables. This is a syntactic sugar change and is easy 
+to understand.
+
+##### Why?
+It's easier to read and quicker to write. 
+
+##### Example
+
+```
+// Without Tempalte Literals:
+function buildNametag(first, last) {
+  return 'Hello my name is ' + first + ' ' + last + '!';    
+}
+console.log(buildNametag('Eric', 'Mulcahy'));
+```
+
+is equivalent to:
+
+```
+function buildNametag(first, last) {
+  return `Hello my name is ${first} ${last}!`;    
+}
+console.log(buildNametag('Eric', 'Mulcahy'));
+```
+
+Just use back ticks instead of single quotes, and surround your variables with dollar sign + curly braces: `${variable}`
+
+##### Conclusion
+
+They improve readability of code and come in handy for things like building up URLs.
+
+# Multiline Strings
+
+##### What is the change?
+Instead of using the `+` operator to concatenate strings that span more than one line, you can now just use back ticks. 
+
+##### Why?
+No one likes concatenating strings.
+
+##### Example
+```
+// Concatenating strings:
+function getTermsOfService() {
+    return 'I hereby agree that I will only use this Sircon product for good,\r\n'
+        + 'and will not use it for evil, and I will always have all my compliance\r\n'
+        + 'stuff done on time, and I will never double click submit buttons in CX\r\n';
+}
+
+console.log(getTermsOfService());
+```
+
+with multiline strings:
+
+```
+function getTermsOfService(first, last) {
+    return `I hereby agree that I will only use this Sircon product for good,
+        and will not use it for evil, and I will always have all my compliance
+        stuff done on time, and I will never double click submit buttons in CX`;
+}
+console.log(getTermsOfService());
+```
+
+##### Conclusion
+This is a handy way to make code a bit more readable. Keep in mind line breaks in your multiline string are treated as \r\n. 
+
+
+# Array Prototype Functions
+
+##### What is the change?
+
+##### Why?
+
+##### Conclusion
