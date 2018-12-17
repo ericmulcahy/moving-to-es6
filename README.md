@@ -8,9 +8,9 @@ by Eric Mulcahy
 - Multiline strings
 - `for .. of` and `for .. in`
 - ES5/6 Array prototype functions
+- Arrow Functions
 
 ###TODO
-- arrow functions - don't need the function syntax
 - this & arrow functions - can't just swap all functions to arrow functions. but callbacks are safe
 - Map, Set vs objects and arrays. Show Jsonify of them - not good transport
 - Promise
@@ -331,3 +331,128 @@ may be null.
 
 Many array functions previously only available from libraries like lodash are now built into the language. Just be careful
 when switching because there are some subtle differences. 
+
+# Arrow Functions
+Arrow functions are shorthand function expressions. Arrow functions are easier to read and do not have their own `this` context.
+
+### Basic Syntax
+
+```
+// Example from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+var materials = ['Hydrogen', 'Helium', 'Lithium', 'Beryllium'];
+
+// expected output: Array [8, 6, 7, 9]
+
+// Function syntax:
+console.log(materials.map(function(material) {return material.length}));
+
+// Arrow function syntax:
+console.log(materials.map(material => material.length));
+```
+
+- The `function` keyword is gone.
+- The curly braces are gone (in this example)
+- There is no `return` statement  (in this example)
+- This is a nice shorthand way to represent a non-method function.  
+
+Arrow functions are often used for in-place, not-reused functions that do not need to be methods. They are usually short,
+but it is possible to have multiple statements. In that case, you do still need to use curly braces and a `return` statement:
+
+```
+console.log(materials.map(material => {
+    const doubleLength = material.length * 2;
+    return doubleLength;
+}));
+```
+
+The parameters are optional just like with regular Javascript functions. For example all 3 of these are valid:
+
+```
+return new Promise((resolve, reject) => {
+  if (true) {
+    resolve(42);
+  } else {
+    reject('error!');
+  }
+});
+```
+
+```
+// Parentheses are optional when there's only one parameter name:
+return new Promise(resolve => {
+  if (true) {
+    resolve(42);
+  }
+});
+```
+
+```
+return new Promise(resolve => resolve(42));
+```
+
+### Arrow Functions & This
+This is a little confusing. 
+
+Examples from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+
+Before arrow functions, `this` was defined based on the function. Constructors defined their own `this`. Object mehods
+used the base object's `this` context. Strict mode function calls made `this` undefined. 
+
+```
+// Broken: Just prints 'NaN' to the console because this.age is undefined from the function's `this` context.
+
+function Person() {
+  // The Person() constructor defines `this` as an instance of itself.
+  this.age = 0;
+
+  setInterval(function growUp() {
+    // In non-strict mode, the growUp() function defines `this` 
+    // as the global object (because it's where growUp() is executed.), 
+    // which is different from the `this`
+    // defined by the Person() constructor. 
+    this.age++;
+    console.log(this.age);
+  }, 1000);
+}
+var p = new Person();
+```
+
+In ES5, this can be fixed by assigning the constructor's `this` context to a variable:
+```
+// Works - prints out 1, 2, 3 etc
+
+function Person() {
+  var that = this;
+  that.age = 0;
+
+  setInterval(function growUp() {
+    // The callback refers to the `that` variable of which
+    // the value is the expected object.
+    that.age++;
+    console.log(that.age);
+  }, 1000);
+}
+var p = new Person();
+```
+
+Arrow functions do not have their own `this` context. Instead they use `this` from the enclosing context: 
+```
+// Works without needing to keep track of the constructor's `this` context:
+function Person(){
+  this.age = 0;
+
+  setInterval(() => {
+    this.age++; // |this| properly refers to the Person object
+    console.log(this.age);
+  }, 1000);
+}
+var p = new Person();
+```
+
+##### Conclusion - When to use named functions and arrow functions?
+
+Named functions cannot be replaced entirely by arrow functions. It still makes sense to have named functions at the component
+level. However, arrow functions are very useful for method callbacks. For example, functions passed to array prototype methods
+can often be arrow functions. Functions passed to the .then() and .catch() for Promises can often be arrow functions 
+(including http get).
+
