@@ -8,12 +8,10 @@ by Eric Mulcahy
 - Multiline strings
 - `for .. of` and `for .. in`
 - ES5/6 Array prototype functions
-- Arrow Functions
-
-###TODO
-- this & arrow functions - can't just swap all functions to arrow functions. but callbacks are safe
+- Arrow Functions & This
+- Promise 
 - Map, Set vs objects and arrays. Show Jsonify of them - not good transport
-- Promise
+- Shorthand Method Properties
 
 ### What era of Javascript will we cover?
 This presentation will cover ES6, released in 2015. We will not cover features from ES2016, ES2017, or ES2018.
@@ -456,3 +454,181 @@ level. However, arrow functions are very useful for method callbacks. For exampl
 can often be arrow functions. Functions passed to the .then() and .catch() for Promises can often be arrow functions 
 (including http get).
 
+
+# Promises
+
+ES5 already has Promises, and most people are familiar with them. So this is not a lesson on Promises. But ES6 did introduce
+a new `Promise` class to streamline the syntax and wrap functions that do not already use Promises.
+
+```
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise 
+const promise1 = new Promise((resolve, reject) => {
+  setTimeout(function() {
+    resolve('foo');
+  }, 300);
+});
+
+promise1.then(value => console.log(value));
+// expected output: "foo"
+```
+
+There is also `Promise.all`, which is pretty similar to `q.all` from AngularJS:
+
+```
+const promise1 = new Promise((resolve, reject) => {
+  setTimeout(function() {
+    resolve('foo');
+  }, 300);
+});
+
+const promise2 = new Promise((resolve, reject) => {
+  setTimeout(function() {
+    resolve('bar');
+  }, 600);
+});
+
+Promise.all([promise1, promise2]).then(results => console.log(results));
+// ["foo", "bar"]
+```
+
+# New Data Types: Map & Set
+
+##### Sets example with ES5 syntax:
+```
+// Example from http://es6-features.org/#SetDataStructure
+var s = {};
+s["hello"] = true; s["goodbye"] = true; s["hello"] = true;
+Object.keys(s).length === 2;
+s["hello"] === true;
+for (var key in s) // arbitrary order
+    if (s.hasOwnProperty(key))
+        console.log(key);
+console.log(JSON.stringify(s));
+```
+
+##### Set Updated for ES6:
+```
+// Example from http://es6-features.org/#SetDataStructure
+let s = new Set()
+s.add("hello").add("goodbye").add("hello")
+s.size === 2
+s.has("hello") === true
+for (let key of s.values()) // insertion order
+    console.log(key);
+console.log(JSON.stringify(s));
+```
+
+##### Map example with ES5 syntax:
+```
+// Example from http://es6-features.org/#MapDataStructure
+var m = {};
+// no equivalent in ES5
+m["hello"] = 42;
+// no equivalent in ES5
+// no equivalent in ES5
+Object.keys(m).length === 2;
+for (key in m) {
+    if (m.hasOwnProperty(key)) {
+        var val = m[key];
+        console.log(key + " = " + val);
+    }
+}
+```
+
+##### Map Updated for ES6:
+```
+// Example from http://es6-features.org/#MapDataStructure
+let m = new Map()
+let s = Symbol()
+m.set("hello", 42)
+m.set(s, 34)
+m.get(s) === 34
+m.size === 2
+for (let [ key, val ] of m.entries())
+    console.log(key + " = " + val)
+```
+
+##### Conclusion
+
+The new data types can be handy if you want to use methods for Sets or Maps that are not available on plain Objects. However,
+there are some differences especially around the JSON representation of the objects. 
+
+# Shorthand Method Properties
+As much as we love writing `function` over and over again, it is not necessary anymore for object functions:
+
+```
+// ES 5 example:
+obj = {
+    foo: function (a, b) {
+        …
+    },
+    bar: function (x, y) {
+        …
+    }
+};
+```
+
+```
+// ES 6 example:
+obj = {
+    foo (a, b) {
+        …
+    },
+    bar (x, y) {
+        …
+    }
+};
+```
+
+# Module export/import
+Examples from http://es6-features.org/#ValueExportImport
+
+ES5:
+```
+//  lib/math.js
+LibMath = {};
+LibMath.sum = function (x, y) { return x + y };
+LibMath.pi = 3.141593;
+
+//  someApp.js
+var math = LibMath;
+console.log("2π = " + math.sum(math.pi, math.pi));
+
+//  otherApp.js
+var sum = LibMath.sum, pi = LibMath.pi;
+console.log("2π = " + sum(pi, pi));
+```
+
+ES6:
+```
+//  lib/math.js
+export function sum (x, y) { return x + y };
+export var pi = 3.141593;
+
+//  someApp.js
+import * as math from "lib/math";
+console.log("2π = " + math.sum(math.pi, math.pi));
+
+//  otherApp.js
+import { sum, pi } from "lib/math";
+console.log("2π = " + sum(pi, pi));
+```
+
+# Other topics not covered here:
+Examples from http://es6-features.org/
+
+- Default parameters: `function f (x, y = 7, z = 42) {return x * y * z}`
+- Spread operator: 
+```
+const params = [ "hello", true, 7 ]
+const other = [ 1, 2, ...params ] // [ 1, 2, "hello", true, 7 ]
+```
+- Binary and Octal literals: `0b111110111 === 503    //instead of parseInt("111110111", 2) === 503`
+- Property shorthand:
+```
+var x = 0, y = 0;
+obj = { x, y };
+// instead of: obj = { x: x, y: y };
+```
+- Classes. Lots of stuff here. See http://es6-features.org/#ClassInheritance
+- Many other things - this is not an exhaustive list.
