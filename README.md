@@ -54,7 +54,7 @@ console.log(x);
 
 What is logged here?
 
-The second reason is immutability. In general it is bad practice to reuse previous variables for
+The second reason is that in general it is bad practice to reuse previous variables for
 new things. Doing so can lead to confusion in the code. Consider:
 
 ```
@@ -69,8 +69,8 @@ console.log(doublePlusOne(1));
 In this contrived example it is no big deal. But if this method were more complicated, and at the
 beginning we use the `double` variable to mean one thing, then reuse it again later to mean
 something else, it becomes confusing. The variable's name of `double` is no longer accurate. It's no longer
-necessary to optimize every piece of memory, and clarity of code is usually more important, so immutability
-should be favored. `var` does not support immutability. So instead, we use `const`:
+necessary to optimize every piece of memory, and clarity of code is usually more important, so constants
+should be favored. Constant variables are also easier for compilers to optimize than reassignable variables. 
 
 ```
 function doublePlusOne(input) {
@@ -91,8 +91,7 @@ Note that `const` prevents _reassigning_ the variable, but not changing the vari
 declare an array: `const myArray = []` you can still push elements to that array. If you declare an object:
 `const myObject = {prop1: 'Yes', prop2: 'Okay'}` you can still change its properties: `myObject.prop1 = 'No'`
 
-
-Of course, there are times where you really want a mutable variable that you can reassign. For example, you cannot use
+Of course, there are times where you really want a reassignable variable. For example, you cannot use
 `const` with a basic for loop:
 
 ```
@@ -124,7 +123,7 @@ console.log(addOneThroughThree());
 
 Instead of `var`, start using `const`. Unless the variable should be reassignable, then use `let`. I recommend just
 using `const` everywhere until you get used to it. If you try to reassign a constant variable, linting will let you know,
-and you can decide if you should use a new variable to keep immutability, or if you really do want a mutable variable.
+and you can decide if you should use a new variable or if you really do want a reassignable variable.
 
 # String Template Literals
 
@@ -138,7 +137,7 @@ It's easier to read and quicker to write.
 ##### Example
 
 ```
-// Without Tempalte Literals:
+// Without Template Literals:
 function buildNametag(first, last) {
   return 'Hello my name is ' + first + ' ' + last + '!';    
 }
