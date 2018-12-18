@@ -12,6 +12,8 @@ by Eric Mulcahy
 - Promise 
 - Map, Set vs objects and arrays. Show Jsonify of them - not good transport
 - Shorthand Method Properties
+- Module export/import
+- Other items not covered in depth
 
 ### What era of Javascript will we cover?
 This presentation will cover ES6, released in 2015. We will not cover features from ES2016, ES2017, or ES2018.
