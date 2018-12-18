@@ -10,7 +10,7 @@ by Eric Mulcahy
 - ES5/6 Array prototype functions
 - Arrow Functions & This
 - Promise 
-- Map, Set vs objects and arrays. Show Jsonify of them - not good transport
+- Map, Set vs objects and arrays.
 - Shorthand Method Properties
 - Module export/import
 - Other items not covered in depth
